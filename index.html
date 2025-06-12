@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Presente Surpresa</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      background-color: black;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    #caixa {
+      background-color: white;
+      color: black;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #botao {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      position: absolute;
+    }
+
+    #mensagemFinal {
+      display: none;
+      color: white;
+      font-size: 28px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    #imagemPresente {
+      display: none;
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="caixa">
+    Clique no botão vermelho para ver o seu presente
+  </div>
+  <button id="botao">Clique aqui</button>
+</div>
+
+<div id="mensagemFinal">Achou q eu não ia te dar nenhuma rosa?</div>
+<img id="imagemPresente" src="URL_DA_SUA_IMAGEM" alt="Rosa">
+
+<script>
+  const botao = document.getElementById('botao');
+  const container = document.getElementById('container');
+  let fugas = 0;
+  let podeClicar = false;
+
+  botao.addEventListener('mouseenter', () => {
+    if (fugas < 3) {
+      const maxX = window.innerWidth - botao.offsetWidth;
+      const maxY = window.innerHeight - botao.offsetHeight;
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      botao.style.left = `${randomX}px`;
+      botao.style.top = `${randomY}px`;
+
+      fugas++;
+      if (fugas === 3) {
+        podeClicar = true;
+      }
+    }
+  });
+
+  botao.addEventListener('click', () => {
+    if (!podeClicar) return;
+
+    // Esconder tudo
+    container.style.display = 'none';
+    botao.style.display = 'none';
+
+    // Mostrar mensagem final e imagem
+    document.getElementById('mensagemFinal').style.display = 'block';
+    document.getElementById('imagemPresente').style.display = 'block';
+  });
+
+  // Posição inicial do botão (abaixo da caixa)
+  window.onload = () => {
+    const caixa = document.getElementById('caixa');
+    const caixaRect = caixa.getBoundingClientRect();
+    const btnWidth = botao.offsetWidth;
+
+    botao.style.left = `${(window.innerWidth - btnWidth) / 2}px`;
+    botao.style.top = `${caixaRect.bottom + 20}px`;
+  };
+</script>
+
+</body>
+</html>
